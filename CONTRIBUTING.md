@@ -2,7 +2,7 @@
 
 👍🎉 Thanks a lot for considering contributing 🎉👍
 
-We welcome and encourage contribution. There is many way to contribute: you can
+The community welcomes and encourages contribution. There is many way to contribute: you can
 write bug report, contribute code or documentation.
 
 ## Working on your first Pull Request?
@@ -25,7 +25,7 @@ Feel free to make an issue to request a new functionality.
 
 ## Contributing code/Pull-Request
 
-We welcome contribution, this can be done by starting a pull-request.
+The community welcomes contribution, this can be done by starting a pull-request.
 You can contribute by updating the package content or styling, code (
 .cls file), or both.
 
