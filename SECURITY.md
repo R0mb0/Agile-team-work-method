@@ -12,9 +12,10 @@ If you believe you have found a security vulnerability in this repository, pleas
 
 Please do not report security vulnerabilities through public GitHub issues, discussions, or pull requests.
 
-Instead, please send an email to f.rombaldoni@campus.uniurb.it.
+Instead, please send an email to [f.rombaldoni@campus.uniurb.it.](mailto:f.rombaldoni@campus.uniurb.it.)
 
 Please include as much of the information listed below as you can to help us better understand and resolve the issue:
+
 - The type of issue (e.g., buffer overflow, SQL injection, or cross-site scripting)
 - Full paths of source file(s) related to the manifestation of the issue
 - The location of the affected source code (tag/branch/commit or direct URL)
