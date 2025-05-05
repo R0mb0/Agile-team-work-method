@@ -10,6 +10,22 @@ An agile method for increase the efficiency of group work
 [![Open Source Love svg3](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/R0mb0/Agile-team-work-method)
 [![Donate](https://img.shields.io/badge/PayPal-Donate%20to%20Author-blue.svg)](http://paypal.me/R0mb0)
 
+<details>
+  <summary>
+
+  ## 👉 Click here to read the method 👈
+    
+  </summary>
+  
+![1.png](https://github.com/R0mb0/Agile-team-work-method/blob/main/ReadmeImgs/1.png)
+![2.png](https://github.com/R0mb0/Agile-team-work-method/blob/main/ReadmeImgs/2.png)
+![3.png](https://github.com/R0mb0/Agile-team-work-method/blob/main/ReadmeImgs/3.png)
+![4.png](https://github.com/R0mb0/Agile-team-work-method/blob/main/ReadmeImgs/4.png)
+![5.png](https://github.com/R0mb0/Agile-team-work-method/blob/main/ReadmeImgs/5.png)
+![6.png](https://github.com/R0mb0/Agile-team-work-method/blob/main/ReadmeImgs/6.png)
+  
+</details>
+
 ---
 
 Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
