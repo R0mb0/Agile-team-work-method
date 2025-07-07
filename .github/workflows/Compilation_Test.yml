@@ -10,7 +10,7 @@ jobs:
       - name: Download repo files
         uses: actions/checkout@v4.2.2
       - name: Compile files
-        uses: xu-cheng/latex-action@v3
+        uses: xu-cheng/latex-action@v4
         with:
           working_directory: AgileTeamWorkMethod
           root_file: AgileTeamWorkMethod.tex
