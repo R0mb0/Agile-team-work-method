@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>PDF Viewer</title>
+
+  <style>
+    :root{
+      --bg: #0b1220;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --border: rgba(255,255,255,.14);
+      --accent: #7c5cff;
+      --shadow: 0 22px 70px rgba(0,0,0,.45);
+      --r: 18px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg: #f6f7fb;
+        --panel: rgba(10,20,40,.04);
+        --panel2: rgba(10,20,40,.06);
+        --text: rgba(10,20,40,.92);
+        --muted: rgba(10,20,40,.65);
+        --border: rgba(10,20,40,.12);
+        --shadow: 0 18px 55px rgba(10,20,40,.12);
+      }
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text);
+      background:
+        radial-gradient(1000px 700px at 20% 0%, rgba(124,92,255,.25), transparent 55%),
+        radial-gradient(900px 600px at 85% 10%, rgba(60,220,255,.18), transparent 60%),
+        var(--bg);
+    }
+
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      background: color-mix(in srgb, var(--bg) 80%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 200px;
+    }
+    .logo{
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), #32d7ff);
+      box-shadow: 0 14px 30px rgba(124,92,255,.35);
+    }
+    .title{ font-weight: 800; letter-spacing:.2px; }
+    .sub{ font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .actions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+      align-items:center;
+    }
+    .btn{
+      appearance: none;
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 25%, transparent), transparent);
+      color: var(--text);
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 750;
+      font-size: 14px;
+      transition: transform .12s ease, border-color .12s ease;
+      user-select: none;
+      cursor: pointer;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); }
+    .btn:active{ transform: translateY(0); }
+    .btn.ghost{
+      border-color: var(--border);
+      background: color-mix(in srgb, var(--panel) 70%, transparent);
+    }
+
+    main{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px 16px 28px;
+    }
+    .card{
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 88%, transparent);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .meta{
+      display:flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel2) 80%, transparent);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; color: var(--text); }
+
+    .viewer{
+      height: min(80vh, 920px);
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+    }
+
+    /* Object viewer */
+    object.pdfObject{
+      width: 100%;
+      height: 100%;
+      display:block;
+      border: 0;
+    }
+
+    /* Fallback box inside object (shown only if object cannot render) */
+    .fallback{
+      padding: 16px;
+      display:grid;
+      gap: 10px;
+    }
+    .fallback h2{
+      margin: 0;
+      font-size: 16px;
+      font-weight: 850;
+      color: var(--text);
+    }
+    .fallback p{
+      margin: 0;
+      color: var(--muted);
+      max-width: 80ch;
+      font-size: 13px;
+    }
+    .fallback .row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .note{
+      padding: 12px 14px;
+      border-top: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel2) 70%, transparent);
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <div class="title">PDF Viewer</div>
+        <div class="sub" id="subtitle">Document.pdf</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="btn ghost" id="openBtn" href="./Document.pdf" target="_blank" rel="noopener">Apri</a>
+      <a class="btn" id="downloadBtn" href="./Document.pdf" download>Download</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="meta">
+        <div>File: <span class="mono">Document.pdf</span></div>
+        <div>Tema: <span class="mono" id="themeLabel">auto</span></div>
+      </div>
+
+      <div class="viewer" aria-label="Area visualizzazione PDF">
+        <!--
+          Soluzione “semplice e solida”:
+          - <object> usa il viewer PDF del browser quando disponibile
+          - se non è supportato, mostra automaticamente il fallback interno
+        -->
+        <object class="pdfObject" data="./Document.pdf" type="application/pdf">
+          <div class="fallback">
+            <h2>Impossibile mostrare l’anteprima</h2>
+            <p>
+              Il tuo browser (o il contesto, ad esempio iOS/Safari) potrebbe non supportare
+              la visualizzazione PDF integrata. Usa i pulsanti qui sotto.
+            </p>
+            <div class="row">
+              <a class="btn" href="./Document.pdf" target="_blank" rel="noopener">Apri PDF</a>
+              <a class="btn ghost" href="./Document.pdf" download>Download</a>
+            </div>
+          </div>
+        </object>
+      </div>
+
+      <div class="note">
+        Suggerimento: se l’anteprima non è perfetta su mobile, “Apri” è l’opzione più affidabile.
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Solo cosmetica: label tema auto
+    const mql = window.matchMedia?.("(prefers-color-scheme: dark)");
+    const themeLabel = document.getElementById("themeLabel");
+    const setThemeLabel = () => {
+      if (!mql) return (themeLabel.textContent = "auto");
+      themeLabel.textContent = mql.matches ? "scuro (auto)" : "chiaro (auto)";
+    };
+    setThemeLabel();
+    mql?.addEventListener?.("change", setThemeLabel);
+  </script>
+
+</body>
+</html>
